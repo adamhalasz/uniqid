@@ -2,7 +2,8 @@
 
 ![unqiid npm badge](http://img.shields.io/npm/v/uniqid.svg) ![uniqid npm downloads badge](https://img.shields.io/npm/dm/uniqid.svg) 
 
-### **uniqid** is a Unique Hexatridecimal ID generator. It will always create unique id's based on the current time, process and machine name.
+### A Unique Hexatridecimal ID generator. 
+It will always create unique id's based on the current time, process and machine name.
 
 ```
 npm install uniqid
