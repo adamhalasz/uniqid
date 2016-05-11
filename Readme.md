@@ -1,17 +1,34 @@
-# uniqid
-A Unique Hexatridecimal ID Generator. It will always create unique id's based on the current time.
+![uniqid logo](http://i.imgur.com/OrZC1lc.png)
+
+![unqiid npm badge](http://img.shields.io/npm/v/uniqid.svg) ![uniqid npm downloads badge](https://img.shields.io/npm/dm/uniqid.svg) 
+
+### **uniqid** is a Unique Hexatridecimal ID generator. It will always create unique id's based on the current time, process and machine name.
+
 ```
 npm install uniqid
 ```
 
 ## Usage
 ```js
-uniqid = require('uniqid');
+var uniqid = require('uniqid');
 
-console.log(uniqid()); // -> hymhrlrn
-console.log(uniqid(), uniqid()); // -> hymhs7ek, hymhs7el
+console.log(uniqid()); // -> 19fx7pio25mard
+console.log(uniqid(), uniqid()); // -> 19fx7pio25mare, 19fz7pio25mark
 ```
 
+## Features
+- With the current time the ID's are always unique.
+- With the Process PID the ID's are unique even if called at the same time from multiple processes.
+- With the OS Hostname's first 3 letters the ID's are unique even if called at the same time from multiple machines if the OS Hostname is different.
+
+## API:
+####  **uniqid(** prefix *optional string* **)** 
+
+```js
+uniqid() -> "19fx7pio25mard"
+uniqid('hello-') -> "hello-19fx7pio25mard"
+```
+ 
 ## **License**
 
 (The MIT License)

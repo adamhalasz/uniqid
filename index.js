@@ -11,8 +11,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 
 // Unique Hexatridecimal ID Generator
-module.exports = function(){
+var hostname = require('os').hostname().substr(0, 3);
+var MachineProcessId = process.pid.toString(36) + (hostname.charCodeAt(0) + hostname.charCodeAt(1) + hostname.charCodeAt(2)).toString(36) ;
+module.exports = function(prefix){
 	var time = new Date().getTime();
 	while (time == new Date().getTime());
-	return new Date().getTime().toString(36);
+	return (prefix || '') + MachineProcessId + new Date().getTime().toString(36);
 }
