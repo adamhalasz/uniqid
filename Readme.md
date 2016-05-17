@@ -30,7 +30,7 @@ console.log(uniqid(), uniqid()); // -> 4n5pxq24kriob12ogd, 4n5pxq24ksiob12ogl
 
 ## API:
 ####  **uniqid(** prefix *optional string* **)** 
-Generate 18 byte unique id's based on the time, process id and mac address. Works on multi processes and machines. 
+Generate 18 byte unique id's based on the time, process id and mac address. Works on multiple processes and machines. 
 
 ```js
 uniqid() -> "4n5pxq24kpiob12og9"
