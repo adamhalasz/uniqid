@@ -14,7 +14,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 var hostname = require('os').hostname().substr(0, 3);
 var MachineProcessId = process.pid.toString(36) + (hostname.charCodeAt(0) + hostname.charCodeAt(1) + hostname.charCodeAt(2)).toString(36) ;
 module.exports = function(prefix){
+	return (prefix || '') + MachineProcessId + now().toString(36);
+}
+
+function now(){
 	var time = new Date().getTime();
-	while (time == new Date().getTime());
-	return (prefix || '') + MachineProcessId + new Date().getTime().toString(36);
+  var last = now.last || time;
+  now.last = time > last ? time : last + 1;
+  return now.last;
 }
