@@ -12,21 +12,41 @@ npm install uniqid
 ```js
 var uniqid = require('uniqid');
 
-console.log(uniqid()); // -> 19fx7pio25mard
-console.log(uniqid(), uniqid()); // -> 19fx7pio25mare, 19fz7pio25mark
+console.log(uniqid()); // -> 4n5pxq24kpiob12og9
+console.log(uniqid(), uniqid()); // -> 4n5pxq24kriob12ogd, 4n5pxq24ksiob12ogl
 ```
 
 ## Features
-- With the current time the ID's are always unique.
-- With the Process PID the ID's are unique even if called at the same time from multiple processes.
-- With the OS Hostname's first 3 letters the ID's are unique even if called at the same time from multiple machines if the OS Hostname is different.
+- Very fast
+- Generates unique id's on multiple processes and machines even if called at the same time. Generates 100% Unique IDs every time.
+- Shorter 8 and 12 byte versions with less uniqueness.
+
+
+# How it works
+- With the current time the ID's are always unique in a single process.
+- With the Process ID the ID's are unique even if called at the same time from multiple processes.
+- With the MAC Address the ID's are unique even if called at the same time from multiple machines and processes.
 
 ## API:
 ####  **uniqid(** prefix *optional string* **)** 
+Generate 18 byte unique id's based on the time, process id and mac address. Works on multi processes and machines. 
 
 ```js
-uniqid() -> "19fx7pio25mard"
-uniqid('hello-') -> "hello-19fx7pio25mard"
+uniqid() -> "4n5pxq24kpiob12og9"
+uniqid('hello-') -> "hello-4n5pxq24kpiob12og9"
+```
+
+####  **uniqid.process(** prefix *optional string* **)** 
+Generate 12 byte unique id's based on the time and the process id. Works on multiple processes within a single machine but not on multiple machines.
+```js
+uniqid.process() -> "24ieiob0te82"
+```
+
+####  **uniqid.time(** prefix *optional string* **)** 
+Generate 8 byte unique id's based on the current time only. Recommended only on a single process on a single machine.
+
+```js
+uniqid.time() -> "iob0ucoj"
 ```
  
 ## **License**

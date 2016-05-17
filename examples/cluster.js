@@ -16,5 +16,5 @@ if (cluster.isMaster) {
 } else {
   // Workers can share any TCP connection
   // In this case it is an HTTP server
-  console.log(process.pid, uniqid(), uniqid())
+  console.log('PID: ' + process.pid, 'ID-1: '+ uniqid(),  'ID-2: '+ uniqid())
 }
