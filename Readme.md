@@ -19,7 +19,7 @@ console.log(uniqid(), uniqid()); // -> 4n5pxq24kriob12ogd, 4n5pxq24ksiob12ogl
 
 ## Features
 - Very fast
-- Generates unique id's on multiple processes and machines even if called at the same time. Generates 100% Unique IDs every time.
+- Generates unique id's on multiple processes and machines even if called at the same time.
 - Shorter 8 and 12 byte versions with less uniqueness.
 
 
