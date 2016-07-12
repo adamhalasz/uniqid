@@ -49,6 +49,9 @@ Generate 8 byte unique id's based on the current time only. Recommended only on 
 ```js
 uniqid.time() -> "iob0ucoj"
 ```
+
+## Webpack and Browserify
+Since browsers don't provide a Process ID and in most cases neither give a Mac Address using uniqid from Webpack and Browserify falls back to `uniqid.time()` for all the other methods too. The browser is the single process, single machine case anyway.
  
 ## **License**
 
