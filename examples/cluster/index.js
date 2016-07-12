@@ -1,4 +1,4 @@
-var uniqid = require('../')
+var uniqid = require('../../')
 
 const cluster = require('cluster');
 const http = require('http');
