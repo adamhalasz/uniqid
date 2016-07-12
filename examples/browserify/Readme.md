@@ -1,6 +1,8 @@
 # Uniqid Browserify Example
 Tested with Browserify 13.0.1.
 
+[Uniqid Browserify Example](http://i.imgur.com/ubwYKEt.png)
+
 ### Install Browserify
 ```
 npm install browserify -g
