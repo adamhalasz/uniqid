@@ -30,6 +30,8 @@ function now(){
 }
 
 function macHandler(error){
-    if(error) console.info('Info: No mac address - uniqid() falls back to uniqid.process().', error)
-    if(pid == '') console.info('Info: No process.pid - uniqid.process() falls back to uniqid.time().')
+    if(module.parent.uniqid_debug){
+        if(error) console.error('Info: No mac address - uniqid() falls back to uniqid.process().', error)
+        if(pid == '') console.error('Info: No process.pid - uniqid.process() falls back to uniqid.time().')
+    }
 }
