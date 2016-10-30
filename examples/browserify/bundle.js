@@ -251,7 +251,7 @@ lib.networkInterfaces = function () {
     var ifaces = os.networkInterfaces();
     var allAddresses = {};
     Object.keys(ifaces).forEach(function (iface) {
-        addresses = {};
+        var addresses = {};
         var hasAddresses = false;
         ifaces[iface].forEach(function (address) {
             if (!address.internal) {
