@@ -24,7 +24,7 @@ module.exports.time    = function(prefix){ return (prefix || '')                
 //  Helpers
 // ================================================
 function now(){
-    var time = new Date().getTime();
+    var time = Date.now();
     var last = now.last || time;
     return now.last = time > last ? time : last + 1;
 }
