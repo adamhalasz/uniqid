@@ -18,6 +18,7 @@ var address = mac ? parseInt(mac.replace(/\:|\D+/gi, '')).toString(36) : '' ;
 //  Exports
 // ================================================
 module.exports         = function(prefix){ return (prefix || '') + address + pid + now().toString(36); }
+module.exports.default = function(prefix){ return (prefix || '') + address + pid + now().toString(36); }
 module.exports.process = function(prefix){ return (prefix || '')           + pid + now().toString(36); }
 module.exports.time    = function(prefix){ return (prefix || '')                 + now().toString(36); }
 
