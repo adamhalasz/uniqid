@@ -1,7 +1,7 @@
 # Uniqid Browserify Example
 Tested with Browserify 13.0.1.
 
-![Uniqid Browserify Example](http://i.imgur.com/ubwYKEt.png)
+![Uniqid Browserify Example](https://i.imgur.com/xBhYTVE.png)
 
 ### Install Browserify
 ```

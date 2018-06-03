@@ -12,14 +12,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 //  Dependencies
 // ================================================
 var pid = process && process.pid ? process.pid.toString(36) : '' ;
-var mac = typeof __webpack_require__ !== 'function' ? require('macaddress').one(macHandler) : null ;
-var address = mac ? parseInt(mac.replace(/\:|\D+/gi, '')).toString(36) : '' ;
+var address = '';
+if(typeof __webpack_require__ !== 'function'){
+    var mac = '', interfaces = require('os').networkInterfaces();
+    for(interface_key in interfaces){
+        const interface = interfaces[interface_key], length = interface.length;
+        for(var i = 0; i < length; i++){
+            if(interface[i].mac && interface[i].mac != '00:00:00:00:00:00'){
+                mac = interface[i].mac; break;
+            }
+        }
+    }
+    address = mac ? parseInt(mac.replace(/\:|\D+/gi, '')).toString(36) : '' ;
+} 
 
 //  Exports
 // ================================================
 module.exports         = function(prefix){ return (prefix || '') + address + pid + now().toString(36); }
-module.exports.process = function(prefix){ return (prefix || '')           + pid + now().toString(36); }
-module.exports.time    = function(prefix){ return (prefix || '')                 + now().toString(36); }
+module.exports.process = function(prefix){ return (prefix || '') + pid + now().toString(36); }
+module.exports.time    = function(prefix){ return (prefix || '') + now().toString(36); }
 
 //  Helpers
 // ================================================
@@ -27,11 +38,4 @@ function now(){
     var time = Date.now();
     var last = now.last || time;
     return now.last = time > last ? time : last + 1;
-}
-
-function macHandler(error){
-    if(module.parent && module.parent.uniqid_debug){
-        if(error) console.error('Info: No mac address - uniqid() falls back to uniqid.process().', error)
-        if(pid == '') console.error('Info: No process.pid - uniqid.process() falls back to uniqid.time().')
-    }
 }
