@@ -1,6 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-
-},{}],2:[function(require,module,exports){
+(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 exports.endianness = function () { return 'LE' };
 
 exports.hostname = function () {
@@ -47,9 +45,12 @@ exports.tmpdir = exports.tmpDir = function () {
 
 exports.EOL = '\n';
 
-},{}],3:[function(require,module,exports){
-// shim for using process in browser
+exports.homedir = function () {
+	return '/'
+};
 
+},{}],2:[function(require,module,exports){
+// shim for using process in browser
 var process = module.exports = {};
 
 // cached from whatever global is present so that test runners that stub it
@@ -60,22 +61,84 @@ var process = module.exports = {};
 var cachedSetTimeout;
 var cachedClearTimeout;
 
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
 (function () {
-  try {
-    cachedSetTimeout = setTimeout;
-  } catch (e) {
-    cachedSetTimeout = function () {
-      throw new Error('setTimeout is not defined');
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
     }
-  }
-  try {
-    cachedClearTimeout = clearTimeout;
-  } catch (e) {
-    cachedClearTimeout = function () {
-      throw new Error('clearTimeout is not defined');
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
     }
-  }
 } ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
 var queue = [];
 var draining = false;
 var currentQueue;
@@ -100,7 +163,7 @@ function drainQueue() {
     if (draining) {
         return;
     }
-    var timeout = cachedSetTimeout(cleanUpNextTick);
+    var timeout = runTimeout(cleanUpNextTick);
     draining = true;
 
     var len = queue.length;
@@ -117,7 +180,7 @@ function drainQueue() {
     }
     currentQueue = null;
     draining = false;
-    cachedClearTimeout(timeout);
+    runClearTimeout(timeout);
 }
 
 process.nextTick = function (fun) {
@@ -129,7 +192,7 @@ process.nextTick = function (fun) {
     }
     queue.push(new Item(fun, args));
     if (queue.length === 1 && !draining) {
-        cachedSetTimeout(drainQueue, 0);
+        runTimeout(drainQueue);
     }
 };
 
@@ -157,6 +220,10 @@ process.off = noop;
 process.removeListener = noop;
 process.removeAllListeners = noop;
 process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
 
 process.binding = function (name) {
     throw new Error('process.binding is not supported');
@@ -168,7 +235,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],4:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 var uniqid = require('../../');
 window.onload = function(){
     var ul = document.getElementsByTagName('ul')[0]
@@ -178,7 +245,7 @@ window.onload = function(){
         ul.appendChild(li)
     }
 }
-},{"../../":5}],5:[function(require,module,exports){
+},{"../../":4}],4:[function(require,module,exports){
 (function (process){
 /* 
 (The MIT License)
@@ -194,227 +261,34 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 //  Dependencies
 // ================================================
 var pid = process && process.pid ? process.pid.toString(36) : '' ;
-var mac = typeof __webpack_require__ !== 'function' ? require('macaddress').one(macHandler) : null ;
-var address = mac ? parseInt(mac.replace(/\:|\D+/gi, '')).toString(36) : '' ;
+var address = '';
+if(typeof __webpack_require__ !== 'function'){
+    var mac = '', interfaces = require('os').networkInterfaces();
+    for(interface_key in interfaces){
+        const interface = interfaces[interface_key], length = interface.length;
+        for(var i = 0; i < length; i++){
+            if(interface[i].mac && interface[i].mac != '00:00:00:00:00:00'){
+                mac = interface[i].mac; break;
+            }
+        }
+    }
+    address = mac ? parseInt(mac.replace(/\:|\D+/gi, '')).toString(36) : '' ;
+} 
+
 
 //  Exports
 // ================================================
 module.exports         = function(prefix){ return (prefix || '') + address + pid + now().toString(36); }
-module.exports.process = function(prefix){ return (prefix || '')           + pid + now().toString(36); }
-module.exports.time    = function(prefix){ return (prefix || '')                 + now().toString(36); }
+module.exports.process = function(prefix){ return (prefix || '') + pid + now().toString(36); }
+module.exports.time    = function(prefix){ return (prefix || '') + now().toString(36); }
 
 //  Helpers
 // ================================================
 function now(){
-	var time = new Date().getTime();
-	var last = now.last || time;
-	return now.last = time > last ? time : last + 1;
+    var time = Date.now();
+    var last = now.last || time;
+    return now.last = time > last ? time : last + 1;
 }
 
-function macHandler(error){
-    if(error) console.info('Info: No mac address - uniqid() falls back to uniqid.process().', error)
-    if(pid == '') console.info('Info: No process.pid - uniqid.process() falls back to uniqid.time().')
-}
 }).call(this,require('_process'))
-},{"_process":3,"macaddress":6}],6:[function(require,module,exports){
-(function (global){
-var os = require('os');
-
-var lib = {};
-
-function parallel(tasks, done) {
-    var results = [];
-    var errs = [];
-    var length = 0;
-    var doneLength = 0;
-    function doneIt(ix, err, result) {
-        if (err) {
-            errs[ix] = err;
-        } else {
-            results[ix] = result;
-        }
-        doneLength += 1;
-        if (doneLength >= length) {
-            done(errs.length > 0 ? errs : errs, results);
-        }
-    }
-    Object.keys(tasks).forEach(function (key) {
-        length += 1;
-        var task = tasks[key];
-        (global.setImmediate || global.setTimeout)(function () {
-            task(doneIt.bind(null, key), 1);
-        });
-    });
-}
-
-lib.networkInterfaces = function () {
-    var ifaces = os.networkInterfaces();
-    var allAddresses = {};
-    Object.keys(ifaces).forEach(function (iface) {
-        var addresses = {};
-        var hasAddresses = false;
-        ifaces[iface].forEach(function (address) {
-            if (!address.internal) {
-                addresses[(address.family || "").toLowerCase()] = address.address;
-                hasAddresses = true;
-                if (address.mac) {
-                    addresses.mac = address.mac;
-                }
-            }
-        });
-        if (hasAddresses) {
-            allAddresses[iface] = addresses;
-        }
-    });
-    return allAddresses;
-};
-
-var _getMacAddress;
-switch (os.platform()) {
-
-    case 'win32':
-        _getMacAddress = require('./lib/windows.js');
-        break;
-
-    case 'linux':
-        _getMacAddress = require('./lib/linux.js');
-        break;
-
-    case 'darwin':
-    case 'sunos':
-        _getMacAddress = require('./lib/unix.js');
-        break;
-        
-    default:
-        console.warn("node-macaddress: Unkown os.platform(), defaulting to `unix'.");
-        _getMacAddress = require('./lib/unix.js');
-        break;
-
-}
-
-lib.one = function (iface, callback) {
-    if (typeof iface === 'function') {
-        callback = iface;
-
-        var ifaces = lib.networkInterfaces();
-        var alleged = [ 'eth0', 'eth1', 'en0', 'en1' ];
-        iface = Object.keys(ifaces)[0];
-        for (var i = 0; i < alleged.length; i++) {
-            if (ifaces[alleged[i]]) {
-                iface = alleged[i];
-                break;
-            }
-        }
-        if (!ifaces[iface]) {
-            if (typeof callback === 'function') {
-                callback("no interfaces found", null);
-            }
-            return null;
-        }
-        if (ifaces[iface].mac) {
-            if (typeof callback === 'function') {
-                callback(null, ifaces[iface].mac);
-            }
-            return ifaces[iface].mac;
-        }
-    }
-    if (typeof callback === 'function') {
-        _getMacAddress(iface, callback);
-    }
-    return null;
-};
-
-lib.all = function (callback) {
-
-    var ifaces = lib.networkInterfaces();
-    var resolve = {};
-
-    Object.keys(ifaces).forEach(function (iface) {
-        if (!ifaces[iface].mac) {
-            resolve[iface] = _getMacAddress.bind(null, iface);
-        }
-    });
-
-    if (Object.keys(resolve).length === 0) {
-        if (typeof callback === 'function') {
-            callback(null, ifaces);
-        }
-        return ifaces;
-    }
-
-    parallel(resolve, function (err, result) {
-        Object.keys(result).forEach(function (iface) {
-            ifaces[iface].mac = result[iface];
-        });
-        if (typeof callback === 'function') {
-            callback(null, ifaces);
-        }
-    });
-    return null;
-};
-
-module.exports = lib;
-
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./lib/linux.js":7,"./lib/unix.js":8,"./lib/windows.js":9,"os":2}],7:[function(require,module,exports){
-var exec = require('child_process').exec;
-
-module.exports = function (iface, callback) {
-    exec("cat /sys/class/net/" + iface + "/address", function (err, out) {
-        if (err) {
-            callback(err, null);
-            return;
-        }
-        callback(null, out.trim().toLowerCase());
-    });
-};
-
-},{"child_process":1}],8:[function(require,module,exports){
-var exec = require('child_process').exec;
-
-module.exports = function (iface, callback) {
-    exec("ifconfig " + iface, function (err, out) {
-        if (err) {
-            callback(err, null);
-            return;
-        }
-        var match = /[a-f0-9]{2}(:[a-f0-9]{2}){5}/.exec(out.toLowerCase());
-        if (!match) {
-            callback("did not find a mac address", null);
-            return;
-        }
-        callback(null, match[0].toLowerCase());
-    });
-};
-
-},{"child_process":1}],9:[function(require,module,exports){
-var exec = require('child_process').exec;
-
-var regexRegex = /[-\/\\^$*+?.()|[\]{}]/g;
-
-function escape(string) {
-    return string.replace(regexRegex, '\\$&');
-}
-
-module.exports = function (iface, callback) {
-    exec("ipconfig /all", function (err, out) {
-        if (err) {
-            callback(err, null);
-            return;
-        }
-        var match = new RegExp(escape(iface)).exec(out);
-        if (!match) {
-            callback("did not find interface in `ipconfig /all`", null);
-            return;
-        }
-        out = out.substring(match.index + iface.length);
-        match = /[A-Fa-f0-9]{2}(\-[A-Fa-f0-9]{2}){5}/.exec(out);
-        if (!match) {
-            callback("did not find a mac address", null);
-            return;
-        }
-        callback(null, match[0].toLowerCase().replace(/\-/g, ':'));
-    });
-};
-
-},{"child_process":1}]},{},[4]);
+},{"_process":2,"os":1}]},{},[3]);

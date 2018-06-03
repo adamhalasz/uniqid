@@ -1,8 +1,8 @@
 {
   "name": "uniqid",
-  "version": "4.1.1",
+  "version": "5.0.1",
   "description": "Unique ID Generator",
-  "homepage": "http://github.com/adamhalasz/diet-uniqid/",
+  "homepage": "http://github.com/adamhalasz/uniqid/",
   "keywords": [
     "unique id",
     "uniqid",
@@ -27,7 +27,6 @@
     "url": "http://adamhalasz.com/"
   },
   "main": "index.js",
-  "dependencies": {
-    "macaddress": "^0.2.8"
-  }
+  "dependencies": {},
+  "devDependencies": {}
 }
