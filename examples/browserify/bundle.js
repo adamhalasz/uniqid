@@ -263,12 +263,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 var pid = process && process.pid ? process.pid.toString(36) : '' ;
 var address = '';
 if(typeof __webpack_require__ !== 'function'){
-    var mac = '', interfaces = require('os').networkInterfaces();
-    for(interface_key in interfaces){
-        const interface = interfaces[interface_key], length = interface.length;
+    var mac = '', networkInterfaces = require('os').networkInterfaces();
+    for(interface_key in networkInterfaces){
+        const networkInterface = networkInterfaces[interface_key];
+        const length = networkInterface.length;
         for(var i = 0; i < length; i++){
-            if(interface[i].mac && interface[i].mac != '00:00:00:00:00:00'){
-                mac = interface[i].mac; break;
+            if(networkInterface[i].mac && networkInterface[i].mac != '00:00:00:00:00:00'){
+                mac = networkInterface[i].mac; break;
             }
         }
     }
