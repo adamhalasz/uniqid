@@ -68,8 +68,7 @@ uniqid.time() -> "iob0ucoj"
 Since browsers don't provide a Process ID and in most cases neither give a Mac Address using uniqid from Webpack and Browserify falls back to `uniqid.time()` for all the other methods too. The browser is the single process, single machine case anyway.
 
 ## Debug
-
-Debug messages are turned of by default as of `v4.1.0`. To turn on debug messages you'll need to set `uniqid_debug` to `true` before you require the module.
+Debug messages are turned off by default as of `v4.1.0`. To turn on debug messages you'll need to set `uniqid_debug` to `true` before you require the module.
 
 ```js
 // enable debug messages
