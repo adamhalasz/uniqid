@@ -15,7 +15,7 @@ var pid = process && process.pid ? process.pid.toString(36) : '' ;
 var address = '';
 if(typeof __webpack_require__ !== 'function'){
     var mac = '', networkInterfaces = require('os').networkInterfaces();
-    for(interface_key in networkInterfaces){
+    for(let interface_key in networkInterfaces){
         const networkInterface = networkInterfaces[interface_key];
         const length = networkInterface.length;
         for(var i = 0; i < length; i++){
@@ -29,9 +29,9 @@ if(typeof __webpack_require__ !== 'function'){
 
 //  Exports
 // ================================================
-module.exports = module.exports.default = function(prefix){ return (prefix || '') + address + pid + now().toString(36); }
-module.exports.process = function(prefix){ return (prefix || '') + pid + now().toString(36); }
-module.exports.time    = function(prefix){ return (prefix || '') + now().toString(36); }
+module.exports = module.exports.default = function(prefix = '', suffix = ''){ return prefix + address + pid + now().toString(36) + suffix; }
+module.exports.process = function(prefix = '', suffix = ''){ return prefix + pid + now().toString(36) + suffix; }
+module.exports.time    = function(prefix = '', suffix = ''){ return prefix + now().toString(36) + suffix; }
 
 //  Helpers
 // ================================================
