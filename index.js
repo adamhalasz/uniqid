@@ -29,9 +29,9 @@ if(typeof __webpack_require__ !== 'function'){
 
 //  Exports
 // ================================================
-module.exports = module.exports.default = function(prefix = '', suffix = ''){ return prefix + address + pid + now().toString(36) + suffix; }
-module.exports.process = function(prefix = '', suffix = ''){ return prefix + pid + now().toString(36) + suffix; }
-module.exports.time    = function(prefix = '', suffix = ''){ return prefix + now().toString(36) + suffix; }
+module.exports = module.exports.default = function(prefix, suffix){ return (prefix ? prefix : '') + address + pid + now().toString(36) + (suffix ? suffix : ''); }
+module.exports.process = function(prefix, suffix){ return (prefix ? prefix : '') + pid + now().toString(36) + (suffix ? suffix : ''); }
+module.exports.time    = function(prefix, suffix){ return (prefix ? prefix : '') + now().toString(36) + (suffix ? suffix : ''); }
 
 //  Helpers
 // ================================================
