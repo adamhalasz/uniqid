@@ -1,0 +1,2 @@
+v5.2.0 
+- Use ternary operators for default parameters
