@@ -15,12 +15,13 @@ var pid = process && process.pid ? process.pid.toString(36) : '' ;
 var address = '';
 if(typeof __webpack_require__ !== 'function'){
     var mac = '', networkInterfaces = require('os').networkInterfaces();
+    loop:
     for(let interface_key in networkInterfaces){
         const networkInterface = networkInterfaces[interface_key];
         const length = networkInterface.length;
         for(var i = 0; i < length; i++){
-            if(networkInterface[i].mac && networkInterface[i].mac != '00:00:00:00:00:00'){
-                mac = networkInterface[i].mac; break;
+            if(networkInterface[i] !== undefined && networkInterface[i].mac && networkInterface[i].mac != '00:00:00:00:00:00'){
+                mac = networkInterface[i].mac; break loop;
             }
         }
     }
