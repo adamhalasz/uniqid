@@ -11,7 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 //  Dependencies
 // ================================================
-var pid = process && process.pid ? process.pid.toString(36) : '' ;
+var pid = typeof process !== 'undefined' && process.pid ? process.pid.toString(36) : '' ;
 var address = '';
 if(typeof __webpack_require__ !== 'function'){
     var mac = '', networkInterfaces = require('os').networkInterfaces();
