@@ -1,6 +1,6 @@
 {
   "name": "uniqid",
-  "version": "5.2.0",
+  "version": "5.3.0",
   "description": "Unique ID Generator",
   "homepage": "http://github.com/adamhalasz/uniqid/",
   "keywords": [
@@ -11,7 +11,7 @@
   ],
   "bugs": {
     "url": "http://github.com/adamhalasz/uniqid/issues",
-    "email": "mail@adamhalasz.com"
+    "email": "adam@aimform.com"
   },
   "repository": {
     "type": "git",
@@ -23,7 +23,7 @@
   "license": "MIT",
   "author": {
     "name": "Halász Ádám",
-    "email": "mail@adamhalasz.com",
+    "email": "adam@aimform.com",
     "url": "http://adamhalasz.com/"
   },
   "main": "index.js",
