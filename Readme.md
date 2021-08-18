@@ -7,7 +7,11 @@
 It will always create unique id's based on the current time, process and machine name.
 
 ```
+// npm 
 npm install uniqid
+
+// yarn
+yarn add uniqid
 ```
 
 ## Usage
