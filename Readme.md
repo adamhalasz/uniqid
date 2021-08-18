@@ -13,11 +13,16 @@ npm install uniqid
 ## Usage
 
 ```js
-// require the module
-var uniqid = require('uniqid'); 
-
-// or import the module
 import uniqid from 'uniqid';
+
+console.log(uniqid()); // -> 4n5pxq24kpiob12og9
+console.log(uniqid(), uniqid()); // -> 4n5pxq24kriob12ogd, 4n5pxq24ksiob12ogl
+```
+
+## Usage with Require 
+
+```js
+var uniqid = require('uniqid'); 
 
 console.log(uniqid()); // -> 4n5pxq24kpiob12og9
 console.log(uniqid(), uniqid()); // -> 4n5pxq24kriob12ogd, 4n5pxq24ksiob12ogl
