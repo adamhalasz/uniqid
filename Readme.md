@@ -13,7 +13,11 @@ npm install uniqid
 ## Usage
 
 ```js
-var uniqid = require('uniqid');
+// require the module
+var uniqid = require('uniqid'); 
+
+// or import the module
+import uniqid from 'uniqid';
 
 console.log(uniqid()); // -> 4n5pxq24kpiob12og9
 console.log(uniqid(), uniqid()); // -> 4n5pxq24kriob12ogd, 4n5pxq24ksiob12ogl
@@ -63,9 +67,9 @@ Generate 8 byte unique id's based on the current time only. Recommended only on 
 uniqid.time() -> "iob0ucoj"
 ```
 
-## Webpack and Browserify
+## Webpack, Browserify, Vite
 
-Since browsers don't provide a Process ID and in most cases neither give a Mac Address using uniqid from Webpack and Browserify falls back to `uniqid.time()` for all the other methods too. The browser is the single process, single machine case anyway.
+Since browsers don't provide a Process ID and in most cases neither give a Mac Address using uniqid from Webpack, Browserify and Vite falls back to `uniqid.time()` for all the other methods too. The browser is the single process, single machine case anyway.
 
 ## Debug
 Debug messages are turned off by default as of `v4.1.0`. To turn on debug messages you'll need to set `uniqid_debug` to `true` before you require the module.
