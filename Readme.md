@@ -6,11 +6,11 @@
 
 It will always create unique id's based on the current time, process and machine name.
 
-```
-# npm 
+```js
+// install with npm 
 npm install uniqid
 
-# yarn
+// install with yarn
 yarn add uniqid
 ```
 
