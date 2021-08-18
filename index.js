@@ -13,19 +13,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // ================================================
 var pid = typeof process !== 'undefined' && process.pid ? process.pid.toString(36) : '' ;
 var address = '';
-if(typeof __webpack_require__ !== 'function'){
-    var mac = '', networkInterfaces = require('os').networkInterfaces();
-    loop:
-    for(let interface_key in networkInterfaces){
-        const networkInterface = networkInterfaces[interface_key];
-        const length = networkInterface.length;
-        for(var i = 0; i < length; i++){
-            if(networkInterface[i] !== undefined && networkInterface[i].mac && networkInterface[i].mac != '00:00:00:00:00:00'){
-                mac = networkInterface[i].mac; break loop;
+if(typeof __webpack_require__ !== 'function' && typeof require !== 'undefined'){
+    var mac = '', os = require('os'); 
+    if(os.networkInterfaces) var networkInterfaces = os.networkInterfaces();
+    if(networkInterfaces){
+        loop:
+        for(let interface_key in networkInterfaces){
+            const networkInterface = networkInterfaces[interface_key];
+            const length = networkInterface.length;
+            for(var i = 0; i < length; i++){
+                if(networkInterface[i] !== undefined && networkInterface[i].mac && networkInterface[i].mac != '00:00:00:00:00:00'){
+                    mac = networkInterface[i].mac; break loop;
+                }
             }
         }
+        address = mac ? parseInt(mac.replace(/\:|\D+/gi, '')).toString(36) : '' ;
     }
-    address = mac ? parseInt(mac.replace(/\:|\D+/gi, '')).toString(36) : '' ;
 } 
 
 //  Exports
