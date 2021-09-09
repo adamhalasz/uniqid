@@ -32,6 +32,30 @@ console.log(uniqid()); // -> 4n5pxq24kpiob12og9
 console.log(uniqid(), uniqid()); // -> 4n5pxq24kriob12ogd, 4n5pxq24ksiob12ogl
 ```
 
+## Usage in Browser 
+Take advantage of content delivery networks for Prototyping/Mockups
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="https://unpkg.com/browse/uniqid@5.5.0/UMD/uniqid.min.js"></script>
+    <script>
+        alert(`Here is an ID: ${uniqid()}`)
+    </script>
+
+    <title>Your App</title>
+</head>
+
+<body>
+
+</body>
+
+</html>
+```
+
+
+
 ## Features
 
 - Very fast
