@@ -13,7 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // ================================================
 var pid = typeof process !== 'undefined' && process.pid ? process.pid.toString(36) : '' ;
 var address = '';
-if(typeof __webpack_require__ !== 'function' && typeof require !== 'undefined'){
+if(typeof __webpack_require__ !== 'function' && typeof global !== 'undefined'){
     var mac = '', os = require('os'); 
     if(os.networkInterfaces) var networkInterfaces = os.networkInterfaces();
     if(networkInterfaces){
