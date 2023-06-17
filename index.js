@@ -11,10 +11,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 //  Dependencies
 // ================================================
-var pid = typeof process !== 'undefined' && process.pid ? process.pid.toString(36) : '' ;
-var address = '';
+const pid = typeof process !== 'undefined' && process.pid ? process.pid.toString(36) : '' ;
+let address = '';
 if(typeof __webpack_require__ !== 'function' && typeof require !== 'undefined'){
-    var mac = '', os = require('os'); 
+    let mac = '';
+    const os = require('os');
     if(os.networkInterfaces) var networkInterfaces = os.networkInterfaces();
     if(networkInterfaces){
         loop:
@@ -33,14 +34,14 @@ if(typeof __webpack_require__ !== 'function' && typeof require !== 'undefined'){
 
 //  Exports
 // ================================================
-module.exports = module.exports.default = function(prefix, suffix){ return (prefix ? prefix : '') + address + pid + now().toString(36) + (suffix ? suffix : ''); }
-module.exports.process = function(prefix, suffix){ return (prefix ? prefix : '') + pid + now().toString(36) + (suffix ? suffix : ''); }
-module.exports.time    = function(prefix, suffix){ return (prefix ? prefix : '') + now().toString(36) + (suffix ? suffix : ''); }
+module.exports = module.exports.default = (prefix, suffix) => { return (prefix || '') + address + pid + now() + (suffix || ''); }
+module.exports.process = (prefix, suffix) => { return (prefix || '') + pid + now() + (suffix || ''); }
+module.exports.time    = (prefix, suffix) => { return (prefix || '') + now() + (suffix || ''); }
 
 //  Helpers
 // ================================================
 function now(){
-    var time = Date.now();
-    var last = now.last || time;
-    return now.last = time > last ? time : last + 1;
+    const time = Date.now();
+    const last = now.last || time;
+    return (now.last = time > last ? time : last + 1).toString(36);
 }
